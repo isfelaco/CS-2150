@@ -8,7 +8,7 @@ lab10: huffmanenc.o heap.o
 	$(CXX) $(DEBUG) huffmanenc.o heap.o
 
 huffmanenc.o : huffmanenc.cpp
-binary_heap.o : heap.h heap.cpp
+heap.o : heap.h heap.cpp
 
 .PHONY: clean
 clean:
