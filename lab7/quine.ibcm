@@ -1,0 +1,24 @@
+C007 000			jmp 	start 	skip around the variables
+0000 001 	i 		dw 	0 	int i
+3000 002	loadit	dw	3000
+0000 003	s		dw	0
+0000 004	zero	dw	0	constant
+0001 005	one		dw	1	constant
+0018 006	num		dw	18
+3004 007			load	zero
+4001 008			store	i
+3006 009	loop	load	num	
+6001 00A			sub		i
+E017 00B			jmpl	xit
+D017 00C			jmpe	xit
+3002 00D			load	loadit		form the instruction to store a[i]
+5001 00E			add		i
+4011 00F			store	doit		plant the instruction into the program
+3009 010			load	s
+0000 011	doit	dw	0
+1800 012			printH
+3001 013			load	i
+5005 014			add		one
+4001 015			store	i
+C009 016			jmp					beginning of loop
+0000 017			halt
