@@ -1,0 +1,97 @@
+C00B 000			jmp						skip past variables to loop
+0000 001	i		dw	0					initialize i to 0; if 10 - i == 0 stop first loop
+0000 002	j		dw	0					initialize j to 10-1=9; if j - i == 0 stop second loop
+0000 003	zero	dw	0
+0001 004	one		dw	1	constant
+000A 005	ten		dw	10	constant		used to stop first for loop
+0070 006	a		dw	70	int[a]			70 is where array will be stored
+0000 007	temp1	dw	0
+0000 008	temp2	dw	0
+4000 009	storeit	dw	4000
+3000 00A	loadit	dw	3000
+3005 00B	loop	load	ten				
+6001 00C			sub		i				
+E01A 00D			jmpl	xit				if 10 - i == 0, jump to end
+D01A 00E			jmpe	xit				if 10 - i < 0, jump to end
+3009 00F			load	storeit			load 4000 for store instruction
+5006 010			add		a				add 50 for placement index
+5001 011			add		i				add i for the index within array
+4014 012			store	doit			plant 405i into line after next
+1000 013			readH	current			read user input
+0000 014	doit	dw	0					performs 405i to plant that input in array
+B000 015									
+3001 016 			load 	i 				i += 1
+5004 017 			add 	one
+4001 018 			store 	i
+C00B 019 	loop 	jmp 					jump to top of loop
+B000 01A
+3003 01B			load	zero
+4001 01C			store	i				reset i to 0
+3005 01D	loop	load	ten				outer loop
+6001 01E			sub		i
+E04F 01F			jmpl	xit				if 10 - i == 0, jump to end
+D04F 020			jmpe	xit				if 10 - i < 0, jump to end
+3003 021			load	zero
+5005 022			add		ten
+6004 023			sub		one
+4002 024			store	j
+3002 025	loop	load	j				inner loop
+6001 026			sub		i
+E04B 027			jmpl	xit				if j - i == 0, jump to increment i
+D04B 028			jmpe	xit				if j - i < 0, jump to increment i
+300A 029			load	loadit
+5006 02A			add		a
+5002 02B			add		j
+402D 02C			store	doit
+0000 02D	doit	dw	0					loads a[j]
+4007 02E			store					store in temp1
+300A 02F			load	loadit
+5006 030			add		a
+5002 031			add		j
+6004 032			sub		one
+4034 033			store	doit
+0000 034	doit	dw	0					loads a[j-1]
+4008 035			store					store in temp2
+3008 036			load	temp2
+6007 037			sub		temp1
+E047 038			jmpl	xit				if temp2 - temp1 == 0, decrement j (no swap)
+D047 039			jmpe	xit				if temp2 - temp1 < 0, decrement j (no swap)
+3009 03A			load	storeit			
+5006 03B			add		a
+5002 03C			add		j				array index a[j]
+403F 03D			store	doit
+3008 03E			load	temp2			replace with value that was in a[j-1]
+0000 03F	doit	dw	0
+3009 040			load	storeit
+5006 041			add		a
+5002 042			add		j
+6004 043			sub		one				array index a[j-1]
+4046 044			store	doit
+3007 045			load	temp1			replace with value that was a[j]
+0000 046	doit	dw	0
+3002 047			load	j				decrement j
+6004 048			sub		one
+4002 049			store	j
+C025 04A			jmp						jump to top of inner loop
+3001 04B			load	i
+5004 04C			add		one
+4001 04D			store	i
+C01D 04E			jmp						jump to top of outer loop
+B000 04F
+3003 050			load	zero
+4001 051			store	i
+3005 052	loop	load	ten				
+6001 053			sub		i				
+E060 054			jmpl	xit				if 10 - i == 0, jump to end
+D060 055			jmpe	xit				if 10 - i < 0, jump to end
+300A 056			load	loadit			load 3000 for load instruction
+5006 057			add		a				add 50 for placement index
+5001 058			add		i				add i for the index within array
+405A 059			store	doit			plant 305i into line after next
+0000 05A	doit	dw	0					performs 305i to load that input in array
+1800 05B			printH					print array[i]
+3001 05C 			load 	i 				i += 1
+5004 05D 			add 	one
+4001 05E 			store 	i
+C052 05F 	loop 	jmp 					jump to top of loop
+0000 060			halt
